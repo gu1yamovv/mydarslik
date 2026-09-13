@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darslik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg-1: oklch(20% 0.04 205);
+    --bg-2: oklch(27% 0.05 199);
+    --halo: oklch(55% 0.13 90);
+    --surface: oklch(98% 0.004 200);
+    --text-primary: oklch(97% 0.012 200);
+    --text-secondary: oklch(76% 0.03 200);
+    --text-label: oklch(85% 0.02 200);
+    --input-text: oklch(24% 0.03 200);
+    --input-placeholder: oklch(63% 0.03 200);
+    --accent: oklch(78% 0.15 85);
+    --accent-hover: oklch(82% 0.14 85);
+    --accent-text: oklch(21% 0.05 78);
+    --error: oklch(70% 0.17 25);
+    --focus-ring: oklch(78% 0.15 85 / 0.45);
+    --divider: oklch(97% 0.01 200 / 0.1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg-1);
+  }
+
+  body {
+    font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text-primary);
+    background:
+      radial-gradient(60% 50% at 50% 12%, var(--halo) 0%, transparent 60%),
+      linear-gradient(165deg, var(--bg-2) 0%, var(--bg-1) 65%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 48px 20px;
+  }
+
+  .stage {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-mark svg { width: 16px; height: 16px; }
+
+  .brand-name {
+    font-family: "Sora", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+  }
+
+  .card {
+    position: relative;
+  }
+
+  .view {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .view[hidden] {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .view { animation: none; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    margin: 0;
+    font-family: "Sora", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--text-primary);
+  }
+
+  .lead {
+    margin: -16px 0 0;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 4px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-label);
+  }
+
+  input {
+    width: 100%;
+    padding: 15px 18px;
+    border-radius: 14px;
+    border: 1.5px solid transparent;
+    background: var(--surface);
+    color: var(--input-text);
+    font-size: 16px;
+    font-family: inherit;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  input::placeholder { color: var(--input-placeholder); }
+
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--focus-ring);
+  }
+
+  input.invalid { border-color: var(--error); }
+
+  .phone-input {
+    display: flex;
+    align-items: stretch;
+    background: var(--surface);
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+  }
+
+  .phone-input:focus-within {
+    box-shadow: 0 0 0 4px var(--focus-ring);
+  }
+
+  .phone-input .prefix {
+    display: flex;
+    align-items: center;
+    padding: 0 4px 0 18px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--input-text);
+    opacity: 0.55;
+  }
+
+  .phone-input input {
+    box-shadow: none;
+    padding-left: 8px;
+    border-radius: 0;
+  }
+
+  .phone-input.invalid { box-shadow: 0 0 0 1.5px var(--error) inset; }
+
+  .error {
+    margin: 0;
+    font-size: 13px;
+    color: var(--error);
+  }
+
+  .btn {
+    appearance: none;
+    border: none;
+    width: 100%;
+    padding: 17px;
+    margin-top: 4px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-text);
+    font-family: "Manrope", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    min-height: 44px;
+    box-shadow: 0 10px 24px -8px oklch(78% 0.15 85 / 0.55);
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn:hover { background: var(--accent-hover); }
+  .btn:active { transform: scale(0.98); }
+
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--focus-ring), 0 10px 24px -8px oklch(78% 0.15 85 / 0.55);
+  }
+
+  .btn[disabled] {
+    opacity: 0.75;
+    cursor: default;
+    transform: none;
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid oklch(21% 0.05 78 / 0.35);
+    border-top-color: var(--accent-text);
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation-duration: 1.4s; }
+  }
+
+  .btn.loading .spinner { display: inline-block; }
+  .btn.loading .btn-label { opacity: 0.85; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .privacy {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    opacity: 0.85;
+  }
+
+  .check {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: oklch(97% 0.012 200 / 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check svg { width: 22px; height: 22px; }
+
+  #view-success .btn { margin-top: 8px; }
+
+  .footer-note {
+    margin: 28px 0 0;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+  }
+
+  @media (max-width: 400px) {
+    body { padding: 36px 16px; }
+    h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5C4 4.67 4.67 4 5.5 4H12V20H5.5C4.67 20 4 19.33 4 18.5V5.5Z" stroke="#241a06" stroke-width="1.6" stroke-linejoin="round"/><path d="M20 5.5C20 4.67 19.33 4 18.5 4H12V20H18.5C19.33 20 20 19.33 20 18.5V5.5Z" stroke="#241a06" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="brand-name">Darslik</span>
+  </div>
+
+  <div class="card" id="app">
+    <section id="view-form" class="view">
+      <h1>Darslikni olishga 1 qadam qoldi</h1>
+      <p class="lead">Arizani to'ldiring, so'ng darslik havolasiga bosing</p>
+
+      <form id="leadForm" novalidate>
+        <div class="field">
+          <label for="name">Ism</label>
+          <input id="name" name="name" type="text" placeholder="Ismingiz" autocomplete="name" />
+          <p class="error" id="nameError" hidden>Ismingizni kiriting</p>
+        </div>
+
+        <div class="field">
+          <label for="phone">Telefon</label>
+          <div class="phone-input" id="phoneWrap">
+            <span class="prefix">+998</span>
+            <input id="phone" name="phone" type="tel" placeholder="90 123 45 67" autocomplete="tel" inputmode="numeric" />
+          </div>
+          <p class="error" id="phoneError" hidden>Telefon raqamini to'g'ri kiriting</p>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="btn-label">Yuborish</span>
+        </button>
+      </form>
+
+      <p class="privacy">Ma'lumotlaringiz faqat siz bilan bog'lanish uchun ishlatiladi.</p>
+    </section>
+
+    <section id="view-success" class="view" hidden>
+      <div class="check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="#f4e6c8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h1>Qabul qilindi!</h1>
+      <p class="lead">Darslikni ko'rish uchun quyidagi tugmaga bosing</p>
+      <a class="btn" id="telegramBtn" href="https://t.me/ulugbek_gulyamov" target="_blank" rel="noopener noreferrer">
+        <span class="btn-label">Darslikni ko'rish</span>
+      </a>
+    </section>
+  </div>
+
+  <p class="footer-note">© 2026 Darslik</p>
+</main>
+
+<script>
+(function () {
+  // Set this to the Apps Script Web App URL once deployed (see setup notes).
+  // Leads are posted here and land as new rows in the Google Sheet.
+  var LEADS_ENDPOINT = "https://script.google.com/macros/s/AKfycbyv9LsYWFcoLVBhb6FamGNv6AblnkE3Pz-t6QQMKxFXUl97za_YMmJwuW-Jx-0cOCcH/exec";
+
+  function sendLead(name, phone) {
+    if (!LEADS_ENDPOINT) return;
+    try {
+      fetch(LEADS_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ name: name, phone: phone, ts: new Date().toISOString() })
+      }).catch(function () {
+        // Fire-and-forget: a network hiccup here shouldn't block the UI.
+      });
+    } catch (err) {
+      // Fire-and-forget: a network hiccup here shouldn't block the UI.
+    }
+  }
+
+  var formView = document.getElementById('view-form');
+  var successView = document.getElementById('view-success');
+  var form = document.getElementById('leadForm');
+  var nameInput = document.getElementById('name');
+  var phoneInput = document.getElementById('phone');
+  var phoneWrap = document.getElementById('phoneWrap');
+  var nameError = document.getElementById('nameError');
+  var phoneError = document.getElementById('phoneError');
+  var submitBtn = document.getElementById('submitBtn');
+
+  var currentView = 'form';
+
+  function showSuccess(animate) {
+    currentView = 'success';
+    formView.hidden = true;
+    successView.hidden = false;
+    if (animate === false) {
+      successView.style.animation = 'none';
+    }
+  }
+
+  function validate() {
+    var ok = true;
+    var name = nameInput.value.trim();
+    var digits = phoneInput.value.replace(/\D/g, '');
+
+    if (name.length < 2) {
+      nameInput.classList.add('invalid');
+      nameError.hidden = false;
+      ok = false;
+    } else {
+      nameInput.classList.remove('invalid');
+      nameError.hidden = true;
+    }
+
+    if (digits.length < 7 || digits.length > 9) {
+      phoneWrap.classList.add('invalid');
+      phoneError.hidden = false;
+      ok = false;
+    } else {
+      phoneWrap.classList.remove('invalid');
+      phoneError.hidden = true;
+    }
+
+    return ok;
+  }
+
+  nameInput.addEventListener('input', function () {
+    if (nameInput.classList.contains('invalid')) validate();
+  });
+  phoneInput.addEventListener('input', function () {
+    if (phoneWrap.classList.contains('invalid')) validate();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate()) return;
+
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+
+    sendLead(nameInput.value.trim(), '998' + phoneInput.value.replace(/\D/g, ''));
+
+    window.setTimeout(function () {
+      showSuccess(true);
+    }, 550);
+  });
+
+  // Carry state across a republish/reload so a reload doesn't drop a
+  // viewer back to an empty form after they've already submitted.
+  function boot(data) {
+    if (data && data.view === 'success') showSuccess(false);
+  }
+  if (window.claude && window.claude.hot) {
+    window.claude.hot.snapshot(function () { return { view: currentView }; });
+    if (window.claude.hot.ready) {
+      window.claude.hot.ready(boot);
+    } else {
+      boot(window.claude.hot.data || {});
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
